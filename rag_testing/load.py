@@ -4,6 +4,7 @@ from langchain.schema.document import Document
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
 from pathlib import Path
+
 CHROMA_PATH = "chroma"
 DATA_PATH = "data"
 
@@ -15,12 +16,14 @@ def load_documents():
 
 def split_documents(documents: list[Document]):
     text_splitter = RecursiveCharacterTextSplitter(
+        # Don't split by any separators
+        separators=[],
         # Each chunk wiill be n characters long
         # Originally 800
         chunk_size=2000,
         # Each chunk will overlap with the previous by n characters
         # Originally 80
-        chunk_overlap=200,
+        chunk_overlap=80,
         # The function used to calculate the length of the text
         length_function=len,
         # Don't treat the default (`self._separators = separators or ["\n\n", "\n", " ", ""]`) as regex
@@ -91,10 +94,11 @@ def main():
     # print(chunks[0])
     add_to_chroma(chunks)
 
+
 def remove_chunks_by_filename(filename: str):
     # Normalize the filename to use the correct path separator
     normalized_filename = Path(filename).resolve()
-    
+
     db = Chroma(
         persist_directory=CHROMA_PATH, embedding_function=get_embedding_function()
     )
@@ -106,7 +110,7 @@ def remove_chunks_by_filename(filename: str):
     ids_to_remove = []
     for doc_id in existing_ids:
         # Extract the path part of the doc_id
-        doc_id_path = Path(doc_id.split(':')[0]).resolve()
+        doc_id_path = Path(doc_id.split(":")[0]).resolve()
         if doc_id_path == normalized_filename:
             ids_to_remove.append(doc_id)
 
@@ -115,6 +119,7 @@ def remove_chunks_by_filename(filename: str):
         print(f"Removed {len(ids_to_remove)} chunks from file {filename}.")
     else:
         print(f"No chunks found for file {filename}.")
+
 
 if __name__ == "__main__":
     main()

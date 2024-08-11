@@ -15,6 +15,9 @@ chromadb = "^0.5.5"
 langchain-chroma = "^0.1.2"
 
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.7"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
