@@ -13,23 +13,32 @@ async def main():
 
         if conversation_id is not None:
             print(f'Created conversation [{conversation_id}].')
+            uris = [
+                "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2018/210951orig1s000multidiscipliner.pdf"  ,
+                # The protocol returns a forbidden error
+                "https://www.nejm.org/doi/suppl/10.1056/NEJMoa1715546/suppl_file/nejmoa1715546_protocol.pdf"
+            ]
+            uri_and_content_id = {}
+            for uri in uris:
+                content_id = await ingest_uri(uri=uri)
+                if content_id is None:
+                    print(f'Failed to ingest content [{uri}].')
+                    continue
 
-            content_id = await ingest_uri(uri="https://www.accessdata.fda.gov/drugsatfda_docs/nda/2018/210951orig1s000multidiscipliner.pdf")
-
-            if content_id is not None:
                 print(f'Ingested content [{content_id}].')
+                uri_and_content_id[uri] = content_id
 
-                prompt = "Who was the Clinical Team Leader?"
+            prompt = "Give me the inclusion criteria for the study."
 
-                print(f'User: {prompt}')
+            print(f'User: {prompt}')
 
-                message = await prompt_conversation(prompt, conversation_id)
+            message = await prompt_conversation(prompt, conversation_id)
 
-                print(f'Assistant: {message.message.strip() if message is not None else None}')
+            print(f'Assistant: {message.message.strip() if message is not None else None}')
 
-                await delete_content(content_id)
-            else:
-                print('Failed to ingest content.')
+            # await delete_content(
+            #     [content_id for _, content_id in uri_and_content_id.items()]
+            # )
 
             await delete_conversation(conversation_id)
         else:
