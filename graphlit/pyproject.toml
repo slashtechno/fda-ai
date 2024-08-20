@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "graphlit-rag"
+version = "0.1.0"
+description = ""
+authors = ["slashtechno <77907286+slashtechno@users.noreply.github.com>"]
+# readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+graphlit-client = "^1.0.20240811001"
+python-dotenv = "^1.0.1"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+graphlit-rag = "src.__main__:main"
