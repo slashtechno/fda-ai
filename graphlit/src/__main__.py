@@ -16,7 +16,7 @@ async def main():
             uris = [
                 "https://www.accessdata.fda.gov/drugsatfda_docs/nda/2018/210951orig1s000multidiscipliner.pdf"  ,
                 # The protocol returns a forbidden error
-                "https://www.nejm.org/doi/suppl/10.1056/NEJMoa1715546/suppl_file/nejmoa1715546_protocol.pdf"
+                # "https://www.nejm.org/doi/suppl/10.1056/NEJMoa1715546/suppl_file/nejmoa1715546_protocol.pdf"
             ]
             uri_and_content_id = {}
             for uri in uris:
@@ -28,7 +28,8 @@ async def main():
                 print(f'Ingested content [{content_id}].')
                 uri_and_content_id[uri] = content_id
 
-            prompt = "Give me the inclusion criteria for the study."
+            # prompt = "who was the clinical team leader"
+            prompt = "who was the Division Director (OHOP)"
 
             print(f'User: {prompt}')
 
@@ -36,9 +37,9 @@ async def main():
 
             print(f'Assistant: {message.message.strip() if message is not None else None}')
 
-            # await delete_content(
-            #     [content_id for _, content_id in uri_and_content_id.items()]
-            # )
+            await delete_content(
+                [content_id for _, content_id in uri_and_content_id.items()]
+            )
 
             await delete_conversation(conversation_id)
         else:

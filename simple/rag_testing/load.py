@@ -1,4 +1,5 @@
 from langchain_community.document_loaders import PyPDFDirectoryLoader
+from langchain_unstructured import UnstructuredLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 from langchain_community.embeddings.ollama import OllamaEmbeddings
@@ -9,9 +10,16 @@ CHROMA_PATH = "chroma"
 DATA_PATH = "data"
 
 
+
+# https://python.langchain.com/v0.2/docs/integrations/providers/unstructured/
+# https://python.langchain.com/v0.2/docs/integrations/document_loaders/unstructured_file/
+# https://docs.unstructured.io/open-source/core-functionality/chunking
 def load_documents():
-    document_loader = PyPDFDirectoryLoader(DATA_PATH)
-    return document_loader.load()
+    files = list(Path(DATA_PATH).rglob("*.pdf"))
+    return UnstructuredLoader(file_path=files, chunking_strategy="by_title").load()
+
+    # document_loader = PyPDFDirectoryLoader(DATA_PATH)
+    # return document_loader.load()
 
 
 def split_documents(documents: list[Document]):
@@ -90,7 +98,8 @@ def calculate_chunk_ids(chunks: list[Document]):
 
 def main():
     documents = load_documents()
-    chunks = split_documents(documents)
+    chunks = documents # Unstructured can split the documents at load time
+    # chunks = split_documents(documents)
     # print(chunks[0])
     add_to_chroma(chunks)
 

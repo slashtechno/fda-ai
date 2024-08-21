@@ -27,7 +27,7 @@ async def create_specification():
         openAI=input_types.OpenAIModelPropertiesInput(model=enums.OpenAIModels.GPT4O_128K),
         searchType=enums.ConversationSearchTypes.VECTOR,
         numberSimilar=25,
-        systemPrompt="Answer with verbatim text",
+        systemPrompt="Output the relevant direct-text content that answers the user's question.",
         promptStrategy=input_types.PromptStrategyInput(
             type=enums.PromptStrategyTypes.OPTIMIZE_SEARCH
         ),
