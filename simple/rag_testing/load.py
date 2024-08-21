@@ -5,7 +5,7 @@ from langchain.schema.document import Document
 from langchain_community.embeddings.ollama import OllamaEmbeddings
 from langchain_chroma import Chroma
 from pathlib import Path
-
+from langchain_community.vectorstores.utils import filter_complex_metadata
 CHROMA_PATH = "chroma"
 DATA_PATH = "data"
 
@@ -16,7 +16,7 @@ DATA_PATH = "data"
 # https://docs.unstructured.io/open-source/core-functionality/chunking
 def load_documents():
     files = list(Path(DATA_PATH).rglob("*.pdf"))
-    return UnstructuredLoader(file_path=files, chunking_strategy="by_title").load()
+    return UnstructuredLoader(file_path=files, chunking_strategy="by_title", max_characters=2200, new_after_n_chars=1000, overlap=300).load()
 
     # document_loader = PyPDFDirectoryLoader(DATA_PATH)
     # return document_loader.load()
@@ -73,7 +73,11 @@ def add_to_chroma(chunks: list[Document]):
         # print(f"Existing: {existing_ids}")
         print(f"Adding new documents {len(new_chunks)}")
         new_chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
-        db.add_documents(new_chunks, ids=new_chunk_ids)
+        total_chunks = len(new_chunks)
+        for index, (chunk, chunk_id) in enumerate(zip(new_chunks, new_chunk_ids), start=1):
+            no_complex_metadata = filter_complex_metadata([chunk])
+            db.add_documents(no_complex_metadata, ids=[chunk_id])
+            print(f"Added chunk {index}/{total_chunks} with id {chunk_id}")
     else:
         print("No new documents to add")
 

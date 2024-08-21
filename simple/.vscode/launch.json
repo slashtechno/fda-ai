@@ -5,7 +5,8 @@
             "name": "Python Debugger: Module",
             "type": "debugpy",
             "request": "launch",
-            "module": "rag_testing"
+            "module": "rag_testing",
+            // "justMyCode": false
         }
     ]
 }
