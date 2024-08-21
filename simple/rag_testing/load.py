@@ -1,5 +1,5 @@
 from langchain_community.document_loaders import PyPDFDirectoryLoader
-from langchain_unstructured import UnstructuredLoader
+from langchain_community.document_loaders import UnstructuredPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.schema.document import Document
 from langchain_community.embeddings.ollama import OllamaEmbeddings
@@ -15,8 +15,12 @@ DATA_PATH = "data"
 # https://python.langchain.com/v0.2/docs/integrations/document_loaders/unstructured_file/
 # https://docs.unstructured.io/open-source/core-functionality/chunking
 def load_documents():
-    files = list(Path(DATA_PATH).rglob("*.pdf"))
-    return UnstructuredLoader(file_path=files, chunking_strategy="by_title", max_characters=2200, new_after_n_chars=1000, overlap=300).load()
+    # return UnstructuredLoader(file_path=files, chunking_strategy="by_title", max_characters=2200, new_after_n_chars=1000, overlap=300).load()
+    docs = []
+    for file in Path(DATA_PATH).rglob("*.pdf"):
+        print(f"Loading {file}")
+        docs.extend(UnstructuredPDFLoader(file_path=file, mode="elements", infer_table_structure=True, ).load())
+    return docs
 
     # document_loader = PyPDFDirectoryLoader(DATA_PATH)
     # return document_loader.load()
