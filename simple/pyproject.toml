@@ -16,7 +16,7 @@ langchain-chroma = "^0.1.2"
 unstructured = {extras = ["local-inference"], version = "^0.15.7"}
 langchain-unstructured = {extras = ["local"], version = "^0.1.1"}
 python-magic = "^0.4.27"
-python-magic-bin = {version = "^0.4.14", markers = "sys_platform == 'win32'"}
+1 = {version = "^0.4.14", markers = "sys_platform == 'win32'"}
 
 
 [tool.poetry.group.dev.dependencies]
