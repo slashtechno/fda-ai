@@ -1,5 +1,4 @@
 # rag-testing  
 A learning project for RAG!  
 
-`simple/` is not necessarily simple, but it doesn't depend on cloud APIs  
-`graphlit/` was an attempt at using [Graphlit](https://www.graphlit.com/) which is RAG-as-a-service  
+The ideal outcome of this project is to parse 100-200 page PDFs and extract the relevant information. Currently, I'm trying to use [Unstructured](https://docs.unstructured.io/open-source/introduction/overview)'s open source library to parse and partition the PDFs.

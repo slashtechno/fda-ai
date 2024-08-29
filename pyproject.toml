@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "rag-testing"
+version = "0.1.0"
+description = ""
+authors = ["slashtechno <77907286+slashtechno@users.noreply.github.com>"]
+# readme = "README.md"
+packages = [{include = "rag_testing"}]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+langchain = "^0.2.12"
+langchain-community = "^0.2.11"
+pypdf = "^4.3.1"
+chromadb = "^0.5.5"
+langchain-chroma = "^0.1.2"
+unstructured = {extras = ["local-inference"], version = "^0.15.7"}
+langchain-unstructured = {extras = ["local"], version = "^0.1.1"}
+python-magic = "^0.4.27"
+1 = {version = "^0.4.14", markers = "sys_platform == 'win32'"}
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+rag-testing = "rag_testing.__main__:main"
